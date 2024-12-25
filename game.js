@@ -10,6 +10,9 @@ let createRect = (x, y, width, height, color) => {
 let fps = 30;
 let blockSize = 20;
 let wallColor = "#342DCA";
+let wallSpaceWidth = blockSize / 1.3;
+let wallOffset = (blockSize - wallSpaceWidth) / 2;
+let wallInnerColor = "black"
 
 let map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -47,6 +50,7 @@ let update = () => {
 }
 
 let draw = () => {
+    createRect(0, 0, canvas.width, canvas.height, "#000000");
     drawWalls();
 }
 
@@ -57,6 +61,18 @@ let drawWalls = () => {
         for (let j = 0; j < map[0].length; j++) {
             if(map[i][j] == 1) {
                 createRect(j * blockSize, i * blockSize, blockSize, blockSize, wallColor)
+                if (j > 0 && map[i][j-1] == 1) {
+                    createRect(j * blockSize, i * blockSize + wallOffset, wallSpaceWidth + wallOffset, wallSpaceWidth, wallInnerColor);
+                }
+                if (j < map[0].length - 1 && map[i][j + 1] == 1) {
+                    createRect(j * blockSize + wallOffset, i * blockSize + wallOffset, wallSpaceWidth + wallOffset, wallSpaceWidth, wallInnerColor);
+                }
+                if (i > 0 && map[i - 1][j] == 1) {
+                    createRect(j * blockSize + wallOffset, i * blockSize, wallSpaceWidth, wallSpaceWidth + wallOffset, wallInnerColor);
+                }
+                if (i < map.length - 1 && map[i + 1][j] == 1) {
+                    createRect(j * blockSize + wallOffset, i * blockSize + wallOffset, wallSpaceWidth, wallSpaceWidth + wallOffset, wallInnerColor);
+                }
             }
         }
     }
