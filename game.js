@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas");
 const canvasContext = canvas.getContext("2d");
-const pacmanFrames = document.getElementById("animaitions");
+const pacmanFrames = document.getElementById("animations");
 const ghostFrames = document.getElementById("ghosts");
 
 let createRect = (x, y, width, height, color) => {
@@ -8,6 +8,7 @@ let createRect = (x, y, width, height, color) => {
     canvasContext.fillRect(x, y, width, height);
 }
 let fps = 30;
+let pacman;
 let blockSize = 20;
 let wallColor = "#342DCA";
 let wallSpaceWidth = blockSize / 1.5;
@@ -51,12 +52,13 @@ let gameLoop = () => {
 }
 
 let update = () => {
-
+    pacman.moveProcess();
 }
 
 let draw = () => {
     createRect(0, 0, canvas.width, canvas.height, "#000000");
     drawWalls();
+    pacman.draw();
 }
 
 let gameInterval = setInterval(gameLoop, 1000/fps);
@@ -82,3 +84,10 @@ let drawWalls = () => {
         }
     }
 }
+
+let createNewPacman = () => {
+    pacman = new PacMan(blockSize, blockSize, blockSize, blockSize, blockSize / 5);
+}
+
+createNewPacman();
+gameLoop();
