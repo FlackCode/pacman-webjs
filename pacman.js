@@ -6,6 +6,7 @@ class PacMan {
         this.height = height;
         this.speed = speed;
         this.direction = DIRECTION_RIGHT;
+        this.nextDirection = this.direction;
         this.currentFrame = 1;
         this.frameCount = 7;
 
@@ -75,7 +76,17 @@ class PacMan {
 
     }
     changeDirectionIfPossible() {
+        if (this.direction == this.nextDirection) return;
 
+        let tempDirection = this.direction;
+        this.direction = this.nextDirection;
+        this.moveForwards();
+        if(this.checkCollision()) {
+            this.moveBackwards();
+            this.direction = tempDirection;
+        } else {
+            this.moveBackwards();
+        }
     }
     changeAnimation() {
         this.currentFrame = 
@@ -86,7 +97,7 @@ class PacMan {
         canvasContext.translate(this.x + blockSize / 2, this.y + blockSize / 2);
         canvasContext.rotate((this.direction * 90 * Math.PI) / 180);
         canvasContext.translate(-this.x - blockSize / 2, -this.y - blockSize / 2);
-        canvasContext.drawImage(pacmanFrames, (this.currentFrame - 1) / blockSize, 0, blockSize, blockSize, this.x, this.y, this.width, this.height)
+        canvasContext.drawImage(pacmanFrames, (this.currentFrame - 1) * blockSize, 0, blockSize, blockSize, this.x, this.y, this.width, this.height)
         canvasContext.restore();
     }
     getMapX() {
@@ -96,9 +107,9 @@ class PacMan {
         return parseInt(this.y / blockSize);
     }
     getMapXRightSide() {
-        return parseInt((this.x * 0.999 * blockSize) / blockSize);
+        return parseInt((this.x + 0.999 * blockSize) / blockSize);
     }
     getMapYRightSide() {
-        return parseInt((this.y * 0.999 * blockSize) / blockSize);
+        return parseInt((this.y + 0.999 * blockSize) / blockSize);
     }
 }
