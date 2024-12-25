@@ -10,9 +10,14 @@ let createRect = (x, y, width, height, color) => {
 let fps = 30;
 let blockSize = 20;
 let wallColor = "#342DCA";
-let wallSpaceWidth = blockSize / 1.3;
+let wallSpaceWidth = blockSize / 1.5;
 let wallOffset = (blockSize - wallSpaceWidth) / 2;
 let wallInnerColor = "black"
+
+const DIRECTION_RIGHT = 4;
+const DIRECTION_UP = 3;
+const DIRECTION_LEFT = 2;
+const DIRECTION_DOWN = 1;
 
 let map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
