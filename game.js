@@ -19,6 +19,7 @@ let score = 0;
 let ghosts = [];
 let ghostCount = 4;
 let lives = 3;
+let foodCount = 0;
 
 const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
@@ -58,6 +59,14 @@ let map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
+for (let i = 0; i < map.length; i++) {
+    for (let j = 0; j < map[0].length; j++) {
+        if (map[i][j] == 2) {
+            foodCount++;
+        }
+    }
+}
+
 let randomTargetsForGhosts = [
     {x: 1 * blockSize, y: 1 * blockSize},
     {x: 1 * blockSize, y: (map.length - 2) * blockSize},
@@ -66,8 +75,8 @@ let randomTargetsForGhosts = [
 ];
 
 let gameLoop = () => {
-    update();
     draw();
+    update();
 }
 
 let update = () => {
@@ -79,6 +88,11 @@ let update = () => {
 
     if(pacman.checkGhostCollision()) {
         restartGame();
+    }
+
+    if (score >= foodCount) {
+        drawWin();
+        clearInterval(gameInterval);
     }
 }
 
@@ -93,6 +107,19 @@ let restartGame = () => {
 
 let gameOver = () => {
     clearInterval(gameInterval);
+    drawGameOver();
+}
+
+let drawGameOver = () => {
+    canvasContext.font = "24px Emulogic";
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText("Game Over!", 155, 220);
+}
+
+let drawWin = () => {
+    canvasContext.font = "24px Emulogic";
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText("You Won!", 160, 220);
 }
 
 let drawLives = () => {
@@ -187,7 +214,7 @@ let createGhosts = () => {
             ghostLocations[i % 4].y,
             124, 
             116, 
-            6 + i,
+            8 + i,
         );
         ghosts.push(newGhost);
     }

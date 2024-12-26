@@ -14,7 +14,7 @@ class Ghost {
         this.randomTargetIndex = parseInt(Math.random() * randomTargetsForGhosts.length);
         setInterval(() => {
             this.changeRandomDirection();
-        }, 10000);
+        }, 1000);
     }
 
     changeRandomDirection() {
@@ -194,9 +194,15 @@ class Ghost {
     }
     draw() {
         canvasContext.save();
-        
         canvasContext.drawImage(ghostFrames, this.imageX, this.imageY, this.imageWidth, this.imageHeight, this.x, this.y, this.width, this.height)
         canvasContext.restore();
+
+        // canvasContext.beginPath();
+        // canvasContext.strokeStyle = "red";
+        // canvasContext.arc(
+        //     this.x + blockSize / 2, this.y + blockSize / 2, this.range * blockSize, 0, 2 * Math.PI
+        // );
+        // canvasContext.stroke();
     }
     getMapX() {
         return parseInt(this.x / blockSize);
