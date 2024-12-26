@@ -18,6 +18,7 @@ let foodColor = "#FEB897";
 let score = 0;
 let ghosts = [];
 let ghostCount = 4;
+let lives = 3;
 
 const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
@@ -67,14 +68,50 @@ let randomTargetsForGhosts = [
 let gameLoop = () => {
     update();
     draw();
-    for (let i = 0; i < ghosts.length; i++) {
-        ghosts[i].moveProcess();
-    }
 }
 
 let update = () => {
     pacman.moveProcess();
     pacman.eat();
+    for (let i = 0; i < ghosts.length; i++) {
+        ghosts[i].moveProcess();
+    }
+
+    if(pacman.checkGhostCollision()) {
+        restartGame();
+    }
+}
+
+let restartGame = () => {
+    createNewPacman();
+    createGhosts();
+    lives--;
+    if (lives == 0) {
+        gameOver();
+    }
+}
+
+let gameOver = () => {
+    clearInterval(gameInterval);
+}
+
+let drawLives = () => {
+    canvasContext.font = "20px Emulogic";
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText("Lives: ", 220, blockSize * (map.length + 1));
+    for (let i = 0; i < lives; i++) {
+        canvasContext.drawImage(
+            pacmanFrames,
+            2 * blockSize,
+            0,
+            blockSize,
+            blockSize,
+            280 + i * blockSize,
+            blockSize * map.length + 5,
+            blockSize,
+            blockSize
+        )
+    }
 }
 
 let drawFoods = () => {
@@ -106,6 +143,7 @@ let draw = () => {
     pacman.draw();
     drawScore();
     drawGhosts();
+    drawLives();
 }
 
 let gameInterval = setInterval(gameLoop, 1000/fps);
