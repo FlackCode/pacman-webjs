@@ -17,6 +17,7 @@ let wallInnerColor = "black";
 let foodColor = "#FEB897";
 let score = 0;
 let ghosts = [];
+let ghostCount = 4;
 
 const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
@@ -28,7 +29,7 @@ let ghostLocations = [
     {x: 176, y: 0},
     {x: 0, y: 121},
     {x: 176, y: 121},
-]
+];
 
 let map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -56,9 +57,19 @@ let map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
+let randomTargetsForGhosts = [
+    {x: 1 * blockSize, y: 1 * blockSize},
+    {x: 1 * blockSize, y: (map.length - 2) * blockSize},
+    {x: (map[0].length - 2) * blockSize, y: blockSize},
+    {x: (map[0].length - 2), y: (map.length - 2) * blockSize},
+];
+
 let gameLoop = () => {
     update();
     draw();
+    for (let i = 0; i < ghosts.length; i++) {
+        ghosts[i].moveProcess();
+    }
 }
 
 let update = () => {
@@ -127,7 +138,7 @@ let createNewPacman = () => {
 
 let createGhosts = () => {
     ghosts = [];
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < ghostCount; i++) {
         let newGhost = new Ghost(
             9 * blockSize + (i%2 == 0 ? 0 : 1) * blockSize,
             10 * blockSize + (i%2 == 0 ? 0 : 1) * blockSize,
